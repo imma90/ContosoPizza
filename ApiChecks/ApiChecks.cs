@@ -90,5 +90,24 @@ namespace ApiChecks
                 yield return new TestCaseData(0).Returns(HttpStatusCode.NotFound).SetName("id 0");
             }
         }
+
+        public static IEnumerable PostTestData
+        {
+            get
+            {
+                yield return new TestCaseData(new Pizza {
+                    Name = "POST valid pizza",
+                    IsGlutenFree = false
+                }).Returns(HttpStatusCode.Created).SetName("Post valid pizza");
+                yield return new TestCaseData(new Pizza {
+                    Name = "POST glutenfree pizza",
+                    IsGlutenFree = true
+                }).Returns(HttpStatusCode.Created).SetName("Post glutenfree pizza");
+                yield return new TestCaseData(new Pizza {
+                    Name = "POST contaminated glutenfree pizza",
+                    IsGlutenFree = false
+                }).Returns(HttpStatusCode.Created).SetName("Post contaminated glutenfree pizza");
+            }
+        }
     }
 }
