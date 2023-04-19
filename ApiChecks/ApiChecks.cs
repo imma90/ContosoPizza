@@ -23,11 +23,8 @@ namespace ApiChecks
         [Test]
         public async Task VerifyGetAllPizzasReturns200()
         {
-            // Arrange
-            var request = new RestRequest();
-
             //Act
-            RestResponse response = await _client.ExecuteGetAsync(request);
+            RestResponse response = await _client.ExecuteGetAsync(Helpers.GetAllPizzasRequest());
 
             //Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, $"Get all pizzas did not return a success status code; it returned {response.StatusCode}");
@@ -36,12 +33,8 @@ namespace ApiChecks
         [Test, TestCaseSource(typeof(TestDataClass), "GetByIdTestData")]
         public async Task<HttpStatusCode> VerifyGetPizzaByIdStatusCode(int id)
         {
-            // Arrange
-            var request = new RestRequest($"{id}");
-            request.AddUrlSegment("id",id);
-
             // Act
-            RestResponse response = await _client.ExecuteGetAsync(request);
+            RestResponse response = await _client.ExecuteGetAsync(Helpers.GetSinglePizzaRequest(id));
 
             // Assert
             return response.StatusCode;
@@ -58,11 +51,8 @@ namespace ApiChecks
                 IsGlutenFree = false
             };
 
-            var request = new RestRequest($"{expectedPizza.Id}");
-            request.AddUrlSegment("id",expectedPizza.Id);
-
             // Act
-            RestResponse<Pizza> response = await _client.ExecuteGetAsync<Pizza>(request);
+            RestResponse<Pizza> response = await _client.ExecuteGetAsync<Pizza>(Helpers.GetSinglePizzaRequest(expectedPizza.Id));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, $"Get pizzas with id {expectedPizza.Id} did not return a success status code; it returned {response.StatusCode}");
@@ -80,11 +70,9 @@ namespace ApiChecks
                 Name = "verify valid POST",
                 IsGlutenFree = false
             };
-            var request = new RestRequest();
-            request.AddJsonBody(expectedPizza);
 
             // Act
-            RestResponse response = await _client.ExecutePostAsync(request);
+            RestResponse response = await _client.ExecutePostAsync(Helpers.PostPizzaRequest(expectedPizza));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode,$"Create pizza with Name {expectedPizza.Name} and GlutenFree {expectedPizza.IsGlutenFree} did not return a success status code; it returned {response.StatusCode}");
