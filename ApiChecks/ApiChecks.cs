@@ -9,19 +9,25 @@ namespace ApiChecks
     [TestFixture]
     public class ApiChecksClass
     {
+        private static RestClient _client;
+        
+        [OneTimeSetUp]
+        public void TestClassInitialize()
+        {
+            var options = new RestClientOptions("https://localhost:7292/pizza"){
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            };
+            _client = new RestClient(options);
+        }
+
         [Test]
         public async Task VeryfyGetAllPizzasReturns200()
         {
             // Arrange
-            var options = new RestClientOptions("https://localhost:7292/pizza"){
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-
-            var client = new RestClient(options);
             var request = new RestRequest();
 
             //Act
-            RestResponse response = await client.ExecuteGetAsync(request);
+            RestResponse response = await _client.ExecuteGetAsync(request);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, $"Get all pizzas did not return a success status code; it returned {response.StatusCode}");
@@ -31,15 +37,11 @@ namespace ApiChecks
         public async Task<HttpStatusCode> VerifyGetPizzaByIdStatusCode(int id)
         {
             // Arrange
-            var options = new RestClientOptions($"https://localhost:7292/pizza/{id}"){
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-
-            var client = new RestClient(options);
-            var request = new RestRequest();
+            var request = new RestRequest($"{id}");
+            request.AddUrlSegment("id",id);
 
             // Act
-            RestResponse response = await client.ExecuteGetAsync(request);
+            RestResponse response = await _client.ExecuteGetAsync(request);
 
             // Assert
             return response.StatusCode;
@@ -56,15 +58,11 @@ namespace ApiChecks
                 IsGlutenFree = false
             };
 
-            var options = new RestClientOptions($"https://localhost:7292/pizza/{expectedPizza.Id}"){
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-
-            var client = new RestClient(options);
-            var request = new RestRequest();
+            var request = new RestRequest($"{expectedPizza.Id}");
+            request.AddUrlSegment("id",expectedPizza.Id);
 
             // Act
-            RestResponse<Pizza> response = await client.ExecuteGetAsync<Pizza>(request);
+            RestResponse<Pizza> response = await _client.ExecuteGetAsync<Pizza>(request);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, $"Get pizzas with id {expectedPizza.Id} did not return a success status code; it returned {response.StatusCode}");
@@ -82,6 +80,7 @@ namespace ApiChecks
             {
                 yield return new TestCaseData(1).Returns(HttpStatusCode.OK).SetName("id 1");
                 yield return new TestCaseData(39393).Returns(HttpStatusCode.NotFound).SetName("nonexistent id");
+                yield return new TestCaseData(0).Returns(HttpStatusCode.NotFound).SetName("id 0");
             }
         }
     }
