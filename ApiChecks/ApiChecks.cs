@@ -21,7 +21,7 @@ namespace ApiChecks
         }
 
         [Test]
-        public async Task VeryfyGetAllPizzasReturns200()
+        public async Task VerifyGetAllPizzasReturns200()
         {
             // Arrange
             var request = new RestRequest();
@@ -69,6 +69,25 @@ namespace ApiChecks
             Assert.AreEqual(expectedPizza.Id, response.Data.Id,$"Get pizzas with id {expectedPizza.Id} did not return pizza with this id; it returned {response.Data.Id}");
             Assert.AreEqual(expectedPizza.Name, response.Data.Name,$"Actual name should have been {expectedPizza.Name} but it was {response.Data.Name}");
             Assert.AreEqual(expectedPizza.IsGlutenFree, response.Data.IsGlutenFree,$"Actual GlutenFree should have been {expectedPizza.IsGlutenFree} but it was {response.Data.IsGlutenFree}");
+        }
+
+        [Test]
+        public async Task VerifyPostWithAllValidValuesReturns201()
+        {
+            // Arrange
+            Pizza expectedPizza = new Pizza
+            {
+                Name = "verify valid POST",
+                IsGlutenFree = false
+            };
+            var request = new RestRequest();
+            request.AddJsonBody(expectedPizza);
+
+            // Act
+            RestResponse response = await _client.ExecutePostAsync(request);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode,$"Create pizza with Name {expectedPizza.Name} and GlutenFree {expectedPizza.IsGlutenFree} did not return a success status code; it returned {response.StatusCode}");
         }
     }
 
