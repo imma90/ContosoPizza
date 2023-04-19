@@ -22,7 +22,7 @@ namespace ApiChecks
             RestResponse response = await client.ExecuteGetAsync(request);
 
             //Assert
-            Assert.AreEqual(HttpStatusCode.Ok, response.StatusCode, $"Get all pizzas did not return a success status code; it returned {response.StatusCode}");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, $"Get all pizzas did not return a success status code; it returned {response.StatusCode}");
         }
     }
 }
