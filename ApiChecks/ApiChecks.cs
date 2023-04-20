@@ -61,6 +61,8 @@ namespace ApiChecks
             Assert.AreEqual(expectedPizza.IsGlutenFree, response.Data.IsGlutenFree,$"Actual GlutenFree should have been {expectedPizza.IsGlutenFree} but it was {response.Data.IsGlutenFree}");
         }
 
+        
+
         [Test]
         public async Task VerifyPostWithAllValidValuesReturns201()
         {
