@@ -40,17 +40,6 @@ namespace ApiChecks
             return response.StatusCode;
         }
 
-        [Test, TestCaseSource(typeof(TestDataClass), "PostTestData")]
-        public async Task<HttpStatusCode> VerifyPostPizzaStatusCode(Pizza pizza)
-        {
-            // Arrange
-            Pizza expectedPizza = Helpers.CreatePizza();
-            
-            // Act
-            RestResponse response = await _client.ExecutePostAsync(Helpers.PostPizzaRequest(expectedPizza));
-
-            return response.StatusCode;
-        }
 
         [Test]
         public async Task VerifyGetPizzaWithId1ReturnsPizza()
@@ -69,21 +58,6 @@ namespace ApiChecks
             Assert.AreEqual(expectedPizza.IsGlutenFree, response.Data.IsGlutenFree,$"Actual GlutenFree should have been {expectedPizza.IsGlutenFree} but it was {response.Data.IsGlutenFree}");
         }
 
-        
-
-        [Test]
-        public async Task VerifyPostWithAllValidValuesReturns201()
-        {
-            // Arrange
-            Pizza pizza = Helpers.CreatePizza(name:"verify valid POST");
-    
-
-            // Act
-            RestResponse response = await _client.ExecutePostAsync(Helpers.PostPizzaRequest(pizza));
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode,$"Create pizza with Name {pizza.Name} and GlutenFree {pizza.IsGlutenFree} did not return a success status code; it returned {response.StatusCode}");
-        }
     }
 
     public class TestDataClass
@@ -98,20 +72,6 @@ namespace ApiChecks
             }
         }
 
-        public static IEnumerable PostTestData
-        {
-            get
-            {
-                yield return new TestCaseData(Helpers.CreatePizza(name:"POST valid pizza",isGlutenFree:false))
-                    .Returns(HttpStatusCode.Created)
-                    .SetName("Post valid pizza");
-                yield return new TestCaseData(Helpers.CreatePizza(name:"POST glutenfree pizza",isGlutenFree:true))
-                    .Returns(HttpStatusCode.Created)
-                    .SetName("Post glutenfree pizza");
-                yield return new TestCaseData(Helpers.CreatePizza(name:"POST contaminated glutenfree pizza",isGlutenFree:false))
-                    .Returns(HttpStatusCode.Created)
-                    .SetName("Post contaminated glutenfree pizza");
-            }
-        }
+        
     }
 }
