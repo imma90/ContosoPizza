@@ -40,5 +40,14 @@ namespace ApiChecks
             request.AddUrlSegment("id",id);
             return request;
         }
+
+        public static Pizza CreatePizza(string name = "veggie pizza", bool isGlutenFree = false)
+        {            
+            return new Pizza
+            {
+                Name = name,
+                IsGlutenFree = isGlutenFree
+            };
+        }
     }
 }

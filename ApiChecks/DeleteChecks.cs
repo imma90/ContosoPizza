@@ -6,7 +6,7 @@ using ContosoPizza.Models;
 namespace ApiChecks
 {
     [TestFixture]
-    public class DeleteChecks
+    public class PostChecks
     {
         private static string _baseUrl;
         private static RestClient _client;
@@ -24,11 +24,7 @@ namespace ApiChecks
         [SetUp]
         public async Task TestDataSetup()
         {
-            Pizza pizza = new Pizza
-            {
-                Name = $"Check delete pizza {new DateTime().Ticks}",
-                IsGlutenFree = false
-            };
+            Pizza pizza = Helpers.CreatePizza(name:$"Check delete pizza {new DateTime().Ticks}");
 
             // Act
             RestResponse<Pizza> response = await _client.ExecutePostAsync<Pizza>(Helpers.PostPizzaRequest(pizza));
