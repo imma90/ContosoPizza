@@ -38,7 +38,7 @@ namespace ApiChecks
         
 
         [Test]
-        public async Task ValidateDeleteWithValidIdReturn204()
+        public async Task VerifyDeleteWithValidIdReturn204()
         {
             // Arrange
             var id = testPizza.Id;
@@ -52,7 +52,7 @@ namespace ApiChecks
         }
 
         [Test]
-        public async Task ValidateDeleteWithValidIdDeletesPizza()
+        public async Task VerifyDeleteWithValidIdDeletesPizza()
         {
             // Arrange
             var id = testPizza.Id;
@@ -67,7 +67,7 @@ namespace ApiChecks
         }
 
         [Test]
-        public async Task ValidateDeleteNonexistentPizzaReturn404()
+        public async Task VerifyDeleteNonexistentPizzaReturn404()
         {
             // Arrange
             int id = 482034;
