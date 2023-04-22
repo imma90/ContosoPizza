@@ -42,7 +42,7 @@ namespace ApiChecks
         }
 
         public static Pizza CreatePizza(string name = "veggie pizza", bool isGlutenFree = false)
-        {            
+        {   
             return new Pizza
             {
                 Name = name,
