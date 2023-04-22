@@ -7,18 +7,8 @@ using ContosoPizza.Models;
 namespace ApiChecks
 {
     [TestFixture]
-    public class ApiChecksClass
+    public class ApiChecksClass : ApiChecksBase
     {
-        private static RestClient _client;
-        
-        [OneTimeSetUp]
-        public void TestClassInitialize()
-        {
-            var options = new RestClientOptions("https://localhost:7292/pizza"){
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-            _client = new RestClient(options);
-        }
 
         [Test]
         public async Task VerifyGetAllPizzasReturns200()

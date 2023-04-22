@@ -6,21 +6,10 @@ using ContosoPizza.Models;
 namespace ApiChecks
 {
     [TestFixture]
-    public class PostChecks
+    public class PostChecks : ApiChecksBase
     {
-        private static string _baseUrl;
-        private static RestClient _client;
-
-        [OneTimeSetUp]
-        public void TestClassInitalize()
-        {
-            var options = new RestClientOptions("https://localhost:7292/pizza"){
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-            _client = new RestClient(options);
-        }
-
         private Pizza testPizza;
+
         [SetUp]
         public async Task TestDataSetup()
         {
