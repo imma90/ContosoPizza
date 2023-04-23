@@ -13,8 +13,8 @@ namespace ApiChecks
         [SetUp]
         public async Task TestDataSetup()
         {
-            Pizza pizza = Helpers.CreatePizza(name:$"Check delete pizza {new DateTime().Ticks}");
-
+            Pizza pizza = Helpers.CreatePizza(name:$"Check delete pizza {DateTimeOffset.UtcNow.Ticks}");
+            Console.WriteLine($"Crreated pizza '{pizza.Name}'");
             // Act
             RestResponse<Pizza> response = await _client.ExecutePostAsync<Pizza>(Helpers.PostPizzaRequest(pizza));
 
